@@ -12,13 +12,14 @@ Setup a RabbitMQ Cluster environment on your device using the pure [RabbitMQ](ht
 ## Quick start
 
 ```
-docker compose up
+chmod +x run.sh
+./run.sh
 ```
 
 Open http://localhost:15672 to login RabbitMQ dashboard.
 
-> Username: `guest`  
-> Password: `guest`
+> Username: `admin`  
+> Password: ``
 
 ## Configuration
 
@@ -26,12 +27,12 @@ Open http://localhost:15672 to login RabbitMQ dashboard.
 
 Docker [compose](https://docs.docker.com/compose/compose-file/) config file, including 3 RabbitMQ service cluster and a HAProxy.
 
-| Service     | Description               |
-| ----------- | ------------------------- |
-| `rabbitmq1` | RabbitMQ (cluster)        |
-| `rabbitmq2` | RabbitMQ (cluster member) |
-| `rabbitmq3` | RabbitMQ (cluster member) |
-| `haproxy`   | Load Balancer             |
+| Service      | Description               |
+| ------------ | ------------------------- |
+| `rabbitmq-1` | RabbitMQ (cluster)        |
+| `rabbitmq-2` | RabbitMQ (cluster member) |
+| `rabbitmq-3` | RabbitMQ (cluster member) |
+| `haproxy`    | Load Balancer             |
 
 #### Default expose ports
 
@@ -44,13 +45,13 @@ Docker [compose](https://docs.docker.com/compose/compose-file/) config file, inc
 
 | Name                     | Default |
 | ------------------------ | ------- |
-| `RABBITMQ_DEFAULT_USER`  | guest   |
-| `RABBITMQ_DEFAULT_PASS`  | guest   |
+| `RABBITMQ_DEFAULT_USER`  | admin   |
+| `RABBITMQ_DEFAULT_PASS`  |         |
 | `RABBITMQ_DEFAULT_VHOST` | /       |
 
 ### `.erlang.cookie`
 
-Put your custom [Erlang Cookie](https://www.rabbitmq.com/clustering.html#erlang-cookie) inside this file (default: `12345`) for the nodes in cluster communicate with each other.
+Put your custom [Erlang Cookie](https://www.rabbitmq.com/clustering.html#erlang-cookie) inside this file for the nodes in cluster communicate with each other.
 
 ### `haproxy.cfg`
 

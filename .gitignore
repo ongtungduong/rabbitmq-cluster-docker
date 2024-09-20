@@ -1,0 +1,9 @@
+# OS
+.DS_Store
+
+# Secrets
+.erlang.cookie
+.env
+
+# Data
+data/
