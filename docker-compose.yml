@@ -1,11 +1,11 @@
 services:
   rabbitmq-1:
-    image: rabbitmq:4.0.1-management
+    image: rabbitmq:${RABBITMQ_VERSION}
     hostname: rabbitmq-1
     environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_VHOST}
     volumes:
       - ${PWD}/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
       - ${PWD}/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
@@ -15,7 +15,7 @@ services:
       - rabbitmq-cluster
 
   rabbitmq-2:
-    image: rabbitmq:4.0.1-management
+    image: rabbitmq:${RABBITMQ_VERSION}
     hostname: rabbitmq-2
     depends_on:
       - rabbitmq-1
@@ -30,7 +30,7 @@ services:
       - rabbitmq-cluster
 
   rabbitmq-3:
-    image: rabbitmq:4.0.1-management
+    image: rabbitmq:${RABBITMQ_VERSION}
     hostname: rabbitmq-3
     depends_on:
       - rabbitmq-1
@@ -45,7 +45,7 @@ services:
       - rabbitmq-cluster
 
   haproxy:
-    image: haproxy:2.8.11
+    image: haproxy:$HAPROXY_VERSION
     volumes:
       - ${PWD}/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     depends_on:
