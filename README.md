@@ -1,25 +1,15 @@
 # RabbitMQ Cluster Docker
 
-Setup a RabbitMQ Cluster environment on your device using the pure [RabbitMQ](https://hub.docker.com/_/rabbitmq/) official docker image with Docker Compose.
+Setup a RabbitMQ Cluster using the [RabbitMQ](https://hub.docker.com/_/rabbitmq/) official docker image with Docker Compose.
 
-## Features
-
-- Super easy setup, config and expand
-- Use a purely official RabbitMQ image
-- Support latest version, optimized for Erlang cookie config
-- Build-in HAProxy load balancing
 
 ## Quick start
 
 ```
-chmod +x run.sh
-./run.sh
+chmod +x start.sh
+./start.sh
 ```
 
-Open http://localhost:15672 to login RabbitMQ dashboard.
-
-> Username: `admin`  
-> Password: ``
 
 ## Configuration
 
@@ -43,25 +33,18 @@ Docker [compose](https://docs.docker.com/compose/compose-file/) config file, inc
 
 ### `.env`
 
+RABBITMQ_PASSWORD will be generated automatically.
+
 | Name                     | Default |
 | ------------------------ | ------- |
-| `RABBITMQ_DEFAULT_USER`  | admin   |
-| `RABBITMQ_DEFAULT_PASS`  |         |
-| `RABBITMQ_DEFAULT_VHOST` | /       |
+| `RABBITMQ_USER`          | admin   |
+| `RABBITMQ_PASSWORD`      | ?       |
+| `RABBITMQ_VHOST`         | /       |
 
 ### `.erlang.cookie`
 
-Put your custom [Erlang Cookie](https://www.rabbitmq.com/clustering.html#erlang-cookie) inside this file for the nodes in cluster communicate with each other.
+.erlang.cookie will be generated automatically.
 
 ### `haproxy.cfg`
 
 Load balancer [HA Proxy](http://www.haproxy.org/) config. Including the load balancing config and the hostnames of the nodes in cluster.
-
-## References
-
-- [docker-rabbitmq-cluster](https://github.com/pardahlman/docker-rabbitmq-cluster)
-- [rabbitmq-cluster](https://github.com/JohnnyVicious/rabbitmq-cluster)
-
-## LICENSE
-
-MIT
