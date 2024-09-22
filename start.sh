@@ -5,9 +5,9 @@ if [ -f .env ]; then
 else
     RABBITMQ_PASSWORD=$(openssl rand -base64 32 | tr -d 'iI1lLoO0' | tr -d -c '[:alnum:]' | cut -c1-32)
     cat << EOF > .env
-RABBITMQ_USER=admin
-RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD
-RABBITMQ_VHOST=/
+RABBITMQ_DEFAULT_USER=admin
+RABBITMQ_DEFAULT_PASS=$RABBITMQ_PASSWORD
+RABBITMQ_DEFAULT_VHOST=/
 EOF
 fi
 

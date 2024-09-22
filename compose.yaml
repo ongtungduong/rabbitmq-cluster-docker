@@ -1,0 +1,59 @@
+x-common: &common
+  restart: always
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "2m"
+      max-file: "10"
+
+x-rabbitmq: &rabbitmq
+  <<: *common
+  image: rabbitmq:${RABBITMQ_VERSION}
+  entrypoint: /usr/local/bin/cluster-entrypoint.sh
+
+x-rabbitmq-join-cluster: &rabbitmq-join-cluster
+  <<: *rabbitmq
+  environment:
+    - JOIN_CLUSTER_HOST=rabbitmq-1
+  depends_on:
+    - rabbitmq-1
+
+services:
+  rabbitmq-1:
+    <<: *rabbitmq
+    hostname: rabbitmq-1
+    env_file: .env
+    volumes:
+      - ${PWD}/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
+      - ${PWD}/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
+      - ${PWD}/data/rabbitmq-2:/var/lib/rabbitmq/
+
+  rabbitmq-2:
+    <<: *rabbitmq-join-cluster
+    hostname: rabbitmq-2
+    volumes:
+      - ${PWD}/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
+      - ${PWD}/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
+      - ${PWD}/data/rabbitmq-2:/var/lib/rabbitmq/
+
+  rabbitmq-3:
+    <<: *rabbitmq-join-cluster
+    hostname: rabbitmq-3
+    volumes:
+      - ${PWD}/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
+      - ${PWD}/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
+      - ${PWD}/data/rabbitmq-3:/var/lib/rabbitmq/
+
+  haproxy:
+    <<: *common
+    image: haproxy:$HAPROXY_VERSION
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - ${PWD}/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - rabbitmq-1
+      - rabbitmq-2
+      - rabbitmq-3
+
