@@ -26,7 +26,7 @@ services:
     volumes:
       - ${PWD}/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
       - ${PWD}/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
-      - ${PWD}/data/rabbitmq-2:/var/lib/rabbitmq/
+      - ${PWD}/data/rabbitmq-1:/var/lib/rabbitmq/
 
   rabbitmq-2:
     <<: *rabbitmq-join-cluster
